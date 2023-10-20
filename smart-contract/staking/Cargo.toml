@@ -15,6 +15,9 @@ no-idl = []
 cpi = ["no-entrypoint"]
 default = []
 
+[profile.release]
+overflow-checks = true
+
 [dependencies]
 anchor-lang = "0.17.0"
 anchor-spl = "0.17.0"

@@ -78,7 +78,6 @@ pub mod staking{
                         if creator.address == *collection_creator && creator.verified==true{
                             staking_data.badge = i as u8;
                             verified = true;
-                            break;
                         }
                     }
                 }
@@ -238,7 +237,7 @@ pub struct StakeNft<'info>{
     #[account(mut)]
     pool : Account<'info, Pool>,
     
-    #[account(mut, constraint=staking_data.is_staked==false)]
+    #[account(mut, has_one=pool, constraint=staking_data.is_staked==false)]
     staking_data : Account<'info, StakingData>,
 
     #[account(mut, constraint=nft_account.mint==staking_data.nft_mint
@@ -261,6 +260,7 @@ pub struct InitStakingData<'info>{
     #[account(constraint=nft_mint.decimals==0 && nft_mint.supply==1)]
     nft_mint : Account<'info, Mint>,
 
+    #[account(owner=metaplex_token_metadata::id)]
     /// CHECK: Metadata Account
     metadata : AccountInfo<'info>,
 
