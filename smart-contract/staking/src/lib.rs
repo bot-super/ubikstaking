@@ -63,6 +63,7 @@ pub mod staking{
         let pool = &ctx.accounts.pool;
         let staking_data = &mut ctx.accounts.staking_data;
         let metadata : metaplex_token_metadata::state::Metadata =  metaplex_token_metadata::state::Metadata::from_account_info(&ctx.accounts.metadata)?;
+        let edition : metaplex_token_metadata::state::MasterEditionV2 = metaplex_token_metadata::state::MasterEdition::from_account_info(&ctx.accounts.edition)?;
         if metadata.mint != ctx.accounts.nft_mint.key(){
             msg!("metadata is not matched");
             return Err(PoolError::InvalidMetadata.into());
@@ -263,6 +264,10 @@ pub struct InitStakingData<'info>{
     #[account(owner=metaplex_token_metadata::id)]
     /// CHECK: Metadata Account
     metadata : AccountInfo<'info>,
+
+    #[account(owner=metaplex_token_metadata::id)]
+    /// CHECK: Metadata Account
+    edition: Account<'info>,
 
     #[account(init,
             seeds=[nft_mint.key().as_ref(),pool.key().as_ref()],
